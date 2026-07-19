@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { withCacheBust } from '../../withCacheBust';
 
 const ALLOWED_EXT = new Set(['.webp', '.jpg', '.jpeg', '.png']);
 
@@ -12,11 +13,11 @@ export function getGalleryImages(slug, fallbackImg) {
   try {
     files = fs.readdirSync(dir);
   } catch {
-    return fallbackImg ? [fallbackImg] : [];
+    return fallbackImg ? [withCacheBust(fallbackImg)] : [];
   }
   const images = files
     .filter((f) => ALLOWED_EXT.has(path.extname(f).toLowerCase()))
     .sort()
-    .map((f) => `/assets/${slug}/${f}`);
-  return images.length > 0 ? images : (fallbackImg ? [fallbackImg] : []);
+    .map((f) => withCacheBust(`/assets/${slug}/${f}`));
+  return images.length > 0 ? images : (fallbackImg ? [withCacheBust(fallbackImg)] : []);
 }

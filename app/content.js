@@ -73,7 +73,7 @@ export const UI = {
 };
 
 export const MESSENGER_HANDLE = "casadana.home";
-export const messengerUrl = `https://m.me/${MESSENGER_HANDLE}`;
+export const messengerUrl = `https://www.facebook.com/Casadanahome`;
 
 export const roomsData = [
   {

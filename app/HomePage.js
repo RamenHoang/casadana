@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
+import Nav from './Nav';
+import { useLang } from './LangContext';
 import PropertyGallery from './properties/[slug]/PropertyGallery';
 import {
   UI,
@@ -17,16 +19,11 @@ import {
 const HERO_SLIDE_MS = 5000;
 
 export default function HomePage({ heroImages, galleryImages }) {
-  const [lang, setLang] = useState('en');
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { lang } = useLang();
   const [heroIndex, setHeroIndex] = useState(0);
   const heroWrapRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    window.addEventListener('scroll', onScroll, { passive: true });
-
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const start = performance.now();
     let rafId;
@@ -46,10 +43,7 @@ export default function HomePage({ heroImages, galleryImages }) {
     };
     rafId = requestAnimationFrame(tick);
 
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(rafId);
-    };
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   useEffect(() => {
@@ -69,36 +63,7 @@ export default function HomePage({ heroImages, galleryImages }) {
   return (
     <>
       {/* ============ NAV ============ */}
-      <div className={`nav${scrolled ? ' nav-scrolled' : ''}`}>
-        <span className="nav-logo">CASADANA</span>
-        <button
-          type="button"
-          className="nav-toggle"
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div className={`nav-menu${menuOpen ? ' open' : ''}`}>
-          <div className="nav-links">
-            <a href="#about" onClick={() => setMenuOpen(false)}>{t.navAbout}</a>
-            <a href="#rooms" onClick={() => setMenuOpen(false)}>{t.navRooms}</a>
-            <a href="#stays" onClick={() => setMenuOpen(false)}>{t.navStays}</a>
-            <a href="#gallery" onClick={() => setMenuOpen(false)}>{t.navGallery}</a>
-            <a href="#location" onClick={() => setMenuOpen(false)}>{t.navLocation}</a>
-          </div>
-          <div className="nav-right">
-            <div className="lang-toggle">
-              <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
-              <button type="button" className={lang === 'vi' ? 'active' : ''} onClick={() => setLang('vi')}>VI</button>
-            </div>
-            <a className="book-link" href={messengerUrl} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>{t.book}</a>
-          </div>
-        </div>
-      </div>
+      <Nav />
 
       {/* ============ HERO ============ */}
       <div className="hero-section">
@@ -210,8 +175,8 @@ export default function HomePage({ heroImages, galleryImages }) {
       </div>
 
       {/* ============ GALLERY ============ */}
-      <div id="gallery" style={{ paddingBottom: 64 }}>
-        <div className="container">
+      <div id="gallery" className="gallery-section">
+        <div className="container gallery-section-heading">
           <h2 className="section-heading">{t.galleryHeading}</h2>
         </div>
         <PropertyGallery images={galleryImages} alt="Casadana homestay" />
@@ -238,7 +203,13 @@ export default function HomePage({ heroImages, galleryImages }) {
       <div className="footer">
         <div>
           <span className="footer-tagline">{t.footerTagline}</span>
-          <p>097 501 0000 · casadana.home@gmail.com · @casadana.home</p>
+          <p>
+            <a href="tel:+84975010000">097 501 0000</a>
+            {' · '}
+            <a href="mailto:casadana.home@gmail.com">casadana.home@gmail.com</a>
+            {' · '}
+            <a href="https://instagram.com/casadana.home" target="_blank" rel="noreferrer">@casadana.home</a>
+          </p>
         </div>
         <a className="btn-cream" href={messengerUrl} target="_blank" rel="noreferrer">{t.footerCta}</a>
       </div>

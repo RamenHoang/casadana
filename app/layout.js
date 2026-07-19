@@ -1,4 +1,5 @@
 import "./globals.css";
+import { LangProvider } from "./LangContext";
 
 export const metadata = {
   title: "Casadana Homestay — Your cozy home in Da Nang",
@@ -19,7 +20,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <LangProvider>{children}</LangProvider>
+      </body>
     </html>
   );
 }

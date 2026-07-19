@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { withCacheBust } from './withCacheBust';
 
 const ALLOWED_EXT = new Set(['.webp', '.jpg', '.jpeg', '.png']);
 
@@ -14,7 +15,7 @@ function readFolder(slug) {
   return files
     .filter((f) => ALLOWED_EXT.has(path.extname(f).toLowerCase()))
     .sort()
-    .map((f) => `/assets/${slug}/${f}`);
+    .map((f) => withCacheBust(`/assets/${slug}/${f}`));
 }
 
 // Combines photos from every property folder into one homepage gallery —
