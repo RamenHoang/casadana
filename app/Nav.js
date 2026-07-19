@@ -23,6 +23,11 @@ export default function Nav({ minimal = false }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   const t = UI[lang];
 
   const langToggle = (

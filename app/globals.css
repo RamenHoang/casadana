@@ -141,6 +141,9 @@ a {
 .nav-scrolled .nav-toggle span {
   background: #2a2620;
 }
+.nav-toggle[aria-expanded="true"] span {
+  background: #2a2620;
+}
 .nav-toggle[aria-expanded="true"] span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
@@ -356,31 +359,41 @@ a {
   .nav-toggle {
     display: flex;
     order: 3;
+    position: relative;
+    z-index: 11;
   }
   .nav-menu {
-    display: none;
-    margin-left: 0;
-  }
-  .nav-menu.open {
-    display: flex;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: fixed;
+    top: 0;
     right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;
+    margin-left: 0;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    justify-content: center;
+    gap: 40px;
     background: #f7f3ec;
-    border-bottom: 1px solid rgba(40, 35, 25, 0.12);
-    box-shadow: 0 16px 30px rgba(40, 35, 25, 0.12);
-    padding: 28px 24px 32px;
+    box-shadow: -16px 0 30px rgba(40, 35, 25, 0.12);
+    padding: 96px 32px 48px;
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+  }
+  .nav-menu.open {
+    transform: translateX(0);
   }
   .nav-menu.open .nav-links,
   .nav-menu.open .nav-right {
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
+    gap: 22px;
     width: 100%;
+  }
+  .nav-links a,
+  .nav-menu .nav-right {
+    font-size: 15px;
   }
   /* the open dropdown always has a solid cream background, regardless of
      scroll position, so its contents always use the dark palette */
@@ -741,16 +754,36 @@ a {
   font-size: 32px;
   color: #e3c9a3;
 }
-.footer p {
+.footer-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  margin: 12px 0 0;
+}
+.footer-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   color: #cabfa9;
-  margin: 10px 0 0;
-}
-.footer p a {
   transition: color 0.25s ease;
 }
-.footer p a:hover {
+.footer-contact svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.footer-contact:hover {
   color: #e3c9a3;
+}
+
+@media (max-width: 640px) {
+  .footer-contacts {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
 
 /* ---------- property page ---------- */
