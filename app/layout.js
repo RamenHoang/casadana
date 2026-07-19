@@ -1,5 +1,6 @@
 import "./globals.css";
 import { LangProvider } from "./LangContext";
+import Preloader from "./Preloader";
 
 export const metadata = {
   title: "Casadana Homestay — Your cozy home in Da Nang",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <Preloader />
         <LangProvider>{children}</LangProvider>
       </body>
     </html>

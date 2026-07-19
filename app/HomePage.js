@@ -34,7 +34,7 @@ export default function HomePage({ heroImages, galleryImages }) {
           el.style.transform = 'scale(1)';
         } else {
           const t = (now - start) / 1000;
-          const scale = 1.05 + 0.045 * Math.sin(t / 9);
+          const scale = 1.05 + 0.045 * Math.sin(t / 2);
           const parallax = Math.min(window.scrollY * 0.12, 70);
           el.style.transform = `scale(${scale}) translateY(${parallax}px)`;
         }
@@ -160,15 +160,15 @@ export default function HomePage({ heroImages, galleryImages }) {
         {properties.map((p, i) => (
           <Reveal key={p.slug} delay={i * 0.1}>
             <Link href={`/properties/${p.slug}`} className="property-row" style={{ textDecoration: 'none' }}>
-              <span className="property-index">{i}</span>
               <div className="property-media">
                 <img src={p.img} alt={p.name} loading="lazy" />
               </div>
               <div className="property-info">
                 <h4>{p.name}</h4>
-                <span>{p.addr}</span>
+                {/* <span>{p.addr}</span> */}
               </div>
-              <span className="property-tag">{p.tag}</span>
+              {/* <span className="property-tag">{p.tag}</span> */}
+              <span className="property-tag">{p.addr}</span>
             </Link>
           </Reveal>
         ))}

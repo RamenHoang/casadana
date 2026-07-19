@@ -39,20 +39,22 @@ export default function PropertyGallery({ images, alt }) {
               onClick={() => setOpenIndex(i % images.length)}
               aria-label={`Open photo ${(i % images.length) + 1}`}
             >
-              <Image
-                src={src}
-                alt={alt}
-                fill
-                sizes={`${Math.round(ratio * 100)}vh`}
-                quality={60}
-                loading="lazy"
-                onLoad={(e) => {
-                  const { naturalWidth: w, naturalHeight: h } = e.target;
-                  if (h > 0 && ratios[src] === undefined) {
-                    setRatios((prev) => ({ ...prev, [src]: w / h }));
-                  }
-                }}
-              />
+              <div className="property-gallery-item-inner">
+                <Image
+                  src={src}
+                  alt={alt}
+                  fill
+                  sizes={`${Math.round(ratio * 100)}vh`}
+                  quality={60}
+                  loading="lazy"
+                  onLoad={(e) => {
+                    const { naturalWidth: w, naturalHeight: h } = e.target;
+                    if (h > 0 && ratios[src] === undefined) {
+                      setRatios((prev) => ({ ...prev, [src]: w / h }));
+                    }
+                  }}
+                />
+              </div>
             </button>
           );
         })}
