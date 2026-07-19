@@ -5,9 +5,27 @@ import { useEffect, useRef, useState } from 'react';
 export default function Lightbox({ images, index, alt, onClose, onIndexChange }) {
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [loading, setLoading] = useState(true);
   const dragState = useRef(null);
 
   const count = images.length;
+
+  // the browser drops the previous frame the instant `src` changes, so track
+  // load state per index to show a spinner and fade the new photo in instead
+  // of popping straight to a blank stage
+  useEffect(() => {
+    setLoading(true);
+  }, [index]);
+
+  // warm the cache for the neighbours so prev/next usually resolves instantly
+  useEffect(() => {
+    if (count <= 1) return;
+    [index - 1, index + 1].forEach((i) => {
+      const src = images[((i % count) + count) % count];
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, [index, count, images]);
 
   const goTo = (i) => {
     setZoom(1);
@@ -80,10 +98,16 @@ export default function Lightbox({ images, index, alt, onClose, onIndexChange })
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
+        {loading && (
+          <span className="lightbox-spinner" aria-hidden="true" />
+        )}
         <img
           src={images[index]}
           alt={alt}
           draggable={false}
+          onLoad={() => setLoading(false)}
+          onError={() => setLoading(false)}
+          className={loading ? 'is-loading' : 'is-loaded'}
           style={{
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
             cursor: zoom > 1 ? 'grab' : 'default',
