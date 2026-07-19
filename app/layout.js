@@ -1,9 +1,12 @@
-import './globals.css';
+import "./globals.css";
 
 export const metadata = {
-  title: 'Casadana Homestay — Your cozy home in Da Nang',
+  title: "Casadana Homestay — Your cozy home in Da Nang",
   description:
-    'A warm retreat in the heart of Da Nang — cozy rooms, local charm, and hospitality that feels like family.',
+    "A warm retreat in the heart of Da Nang — cozy rooms, local charm, and hospitality that feels like family.",
+  icons: {
+    icon: "/assets/favicon.jpg",
+  },
 };
 
 export default function RootLayout({ children }) {
